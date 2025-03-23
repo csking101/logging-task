@@ -17,7 +17,8 @@ For this demo, `filebeat` worked out, but for larger applications `Fluentd` migh
 - In the elastic search output, I just added the timestamp, and a "log_type" for the metadata
 
 ## nginx/html/index.html
-- Instead of keeping just a GET request, on the NGINX page, I created a static page that can send three types of requests, and get three different responses - 200 OK, 404 Error, 500 Error.- This will let me test out the tagging feature of filebeat, which can be verified in kibana
+- Instead of keeping just a GET request, on the NGINX page, I created a static page that can send three types of requests, and get three different responses - 200 OK, 404 Error, 500 Error.
+- This will let me test out the tagging feature of filebeat, which can be verified in kibana
 
 ## nginx/logs/
 - This directory is the shared volume that is created, to store the logs of the NGINX container.
@@ -28,3 +29,4 @@ For this demo, `filebeat` worked out, but for larger applications `Fluentd` migh
 # Demonstation
 - For the demonstration, I created a new index on Kibana, that searches for `nginx-*`.
 - This allowed me to view the logs in one place, that is on the data explorer.
+- The video of the demonstration is present in this repository under the name `Logging Demo with ELK and NGINX.mp4`.
