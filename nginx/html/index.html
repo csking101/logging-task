@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NGINX with Elastic Stack Logging Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #log-generator {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>NGINX with Elastic Stack Logging Demo</h1>
+    
+    <div class="container">
+        <h2>Demo Page</h2>
+        <p>This page is being served by NGINX, and all requests are being logged and processed by Filebeat, sent to Elasticsearch, and can be visualized in Kibana.</p>
+        
+        <h3>Generate Logs:</h3>
+        <div id="log-generator">
+            <button onclick="generateLogs(200)">Generate 200 OK Logs</button>
+            <button onclick="generateLogs(404)">Generate 404 Error Logs</button>
+            <button onclick="generateLogs(500)">Generate 500 Error Logs</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>Stack Information</h2>
+        <ul>
+            <li>NGINX - Serving this page on port 80</li>
+            <li>Filebeat - Collecting logs from NGINX</li>
+            <li>Elasticsearch - Storing and indexing logs</li>
+            <li>Kibana - Access the dashboard at <a href="http://localhost:5601" target="_blank">http://localhost:5601</a></li>
+        </ul>
+    </div>
+
+    <script>
+        function generateLogs(status) {
+            const count = 10;
+            const endpoints = [
+                '/api/users',
+                '/api/products',
+                '/api/orders',
+                '/api/settings',
+                '/api/analytics'
+            ];
+            
+            for (let i = 0; i < count; i++) {
+                const randomEndpoint = endpoints[Math.floor(Math.random() * endpoints.length)];
+                let url;
+                
+                if (status === 200) {
+                    url = '/';
+                } else if (status === 404) {
+                    url = randomEndpoint + '/nonexistent' + Math.floor(Math.random() * 1000);
+                } else {
+                    url = '/trigger-error/' + Math.floor(Math.random() * 1000);
+                }
+                
+                fetch(url)
+                    .then(response => console.log(`Generated ${response.status} request to ${url}`))
+                    .catch(error => console.log(`Generated error request to ${url}`));
+            }
+            
+            alert(`Generated ${count} requests that should return ${status} status codes.`);
+        }
+    </script>
+</body>
+</html>
